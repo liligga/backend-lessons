@@ -3,3 +3,4 @@
 
 export const SITE_TITLE = 'Igor`s Site';
 export const SITE_DESCRIPTION = 'Welcome to my website!';
+export const BASE_URL = '/bakend-lessons'

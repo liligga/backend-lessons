@@ -7,7 +7,7 @@ import FormattedDate from '../components/FormattedDate.astro';
 
 type Props = CollectionEntry<'lesson'>['data'];
 
-const { title, description } = Astro.props;
+const { title, description, menu } = Astro.props;
 ---
 
 <html lang="en">
@@ -66,5 +66,8 @@ const { title, description } = Astro.props;
 				</div>
 			</article>
 		</main>
+    <aside>
+      {menu}
+    </aside>
 	</body>
 </html>

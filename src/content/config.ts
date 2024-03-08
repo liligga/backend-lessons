@@ -6,6 +6,10 @@ const lesson = defineCollection({
 	schema: z.object({
 		title: z.string(),
 		description: z.string(),
+    menu: z.object({
+      title: z.string(),
+      path: z.string(),
+    })
 	}),
 });
 
