@@ -76,6 +76,7 @@ pip install aiogram python-dotenv
 
 
 ```python
+import asyncio
 from aiogram import Bot, Dispatcher, types
 from dotenv import load_dotenv
 from os import getenv
@@ -85,8 +86,12 @@ load_dotenv()
 bot = Bot(getenv('BOT_TOKEN'))
 dp = Dispatcher()
 
+async def main():
+    # запуск бота:
+    await dp.start_polling(bot)
+
 if __name__ == '__main__':
-    dp.start_polling(bot)
+    asyncio.run(main())
 ```
 
 Это первый скрипт, бот просто запускается, в консоли пусто, как будто ничего не происходит. Если не было никаких ошибок - всё хорошо, бот запущен, он ждет сообщений от серверов Telegram. Он пока не умеет обрабатывать никакие сообщения и команды, но он работает так или иначе. Если его остановить, бот перестанет работать.
@@ -121,6 +126,8 @@ async def echo(message: types.Message):
 ```python
 from aiogram.filters import Command
 
+# остальной код пропущен для краткости
+
 @dp.message(Command('start'))
 async def start(message: types.Message):
     await message.answer(f'Привет, {message.from_user.full_name}!')
@@ -137,10 +144,11 @@ async def start(message: types.Message):
 ```python
 import logging
 
+# остальной код пропущен для краткости
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO)
-    dp.start_polling(bot)
+    asyncio.run(main())
 ```
 
 Это называется логированием, т.е. процесс записи информации о том, что проиходит в программе или системе. Логировать можно любое событие, такое как ошибки, предупреждения, информация о выполнении функций и т.д.
@@ -194,4 +202,19 @@ await message.answer('Привет, я бот')
 А метод `reply()` аналогичен коду:
 ```python
 await bot.send_message(chat_id=message.chat.id, text='Привет, я бот', reply_to_message_id=message.message_id)
+```
+
+##### Меню бота
+
+У нашего бота может быть меню, в котором хранится набор команд, для быстрого их запуска. Такое же меню есть и у @botfather. Как же его сделать? Не сложно. Добавим в функцию `main` следующий код:
+
+```python
+async def main():
+    await bot.set_my_commands([
+        types.BotCommand(command="start", description="Начало"),
+        types.BotCommand(command="pic", description="Получить картинку"),
+    )
+
+    # запуск бота:
+    await dp.start_polling(bot)
 ```
