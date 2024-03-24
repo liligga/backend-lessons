@@ -3,7 +3,9 @@ import SimpleLayout from "../layouts/SimpleLayout.astro";
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
 
-const articles = await getCollection('lesson')
+const articles = (await getCollection('lesson')).sort(
+  (a, b) => a.data.order.valueOf() - b.data.order.valueOf()
+)
 ---
 
 
@@ -12,10 +14,10 @@ const articles = await getCollection('lesson')
   <section>
     <ul>
       {
-        articles.map((lesson) => (
+        articles.map((lesson, ind) => (
           <li>
             <a href={`/lesson/${lesson.slug}/`}>
-              <h5 class="title">{lesson.data.title}</h5>
+              <h5 class="title">{ind+1} - {lesson.data.title}</h5>
             </a>
           </li>
         ))
