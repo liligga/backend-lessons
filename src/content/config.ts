@@ -14,4 +14,14 @@ const lesson = defineCollection({
 	}),
 });
 
-export const collections = { lesson };
+const plan = defineCollection({
+  type: 'content',
+  // Type-check frontmatter using a schema
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number()
+  }),
+});
+
+export const collections = { lesson, plan };
