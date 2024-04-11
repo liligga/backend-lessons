@@ -128,6 +128,8 @@ async def echo(message: types.Message):
 ```python
 from aiogram.filters import Command
 
+# остальной код пропущен для краткости
+
 @dp.message(Command('start'))
 async def start(message: types.Message):
     await message.answer(f'Привет, {message.from_user.full_name}!')
@@ -223,6 +225,21 @@ async def main():
         types.BotCommand('help', 'Помощь'),
         types.BotCommand('pic', 'Получить картинку')
     ])
+
+    # запуск бота:
+    await dp.start_polling(bot)
+```
+
+##### Меню бота
+
+У нашего бота может быть меню, в котором хранится набор команд, для быстрого их запуска. Такое же меню есть и у @botfather. Как же его сделать? Не сложно. Добавим в функцию `main` следующий код:
+
+```python
+async def main():
+    await bot.set_my_commands([
+        types.BotCommand(command="start", description="Начало"),
+        types.BotCommand(command="pic", description="Получить картинку"),
+    )
 
     # запуск бота:
     await dp.start_polling(bot)

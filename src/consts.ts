@@ -3,4 +3,4 @@
 
 export const SITE_TITLE = 'Zzdev сайт';
 export const SITE_DESCRIPTION = 'Лекции и статьи по Python, Javascript, React и т.д.';
-export const BASE_URL = '/bakend-lessons'
+export const BASE_URL = '/backend_lessons'
