@@ -1,7 +1,7 @@
 ---
-import SimpleLayout from '../../layouts/SimpleLayout.astro';
 import { getCollection } from 'astro:content';
 import FormattedDate from '../components/FormattedDate.astro';
+import SimpleLayout from '../layouts/SimpleLayout.astro';
 
 const blogs = (await getCollection('plan')).sort(
   (a, b) => a.data.order.valueOf() - b.data.order.valueOf()

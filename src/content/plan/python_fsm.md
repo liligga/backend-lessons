@@ -2,7 +2,7 @@
 title: Диалоги в Aiogram
 description: Создание диалогов в боте при помощи FSM
 order: 3
-slug: aaaaa
+slug: 70110405-138c-46bb-a4b8-9e20ac633b0a
 ---
 
 1. Создадим класс с состояниями
