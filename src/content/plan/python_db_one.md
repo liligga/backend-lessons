@@ -61,29 +61,29 @@ slug: 56fa1071-33a9-4c2b-a817-e0a080e026fa
     </details>
 
 5. Сделаем так, чтобы при запуске бота создавалось подключение к БД. В файл `config.py` добавим:
-```python
-from db.database import Database
-from pathlib import Path
+    ```python
+    from db.database import Database
+    from pathlib import Path
 
-database = Database(Path('__file__').parent / 'db.sqlite')
-```
-а в файле `main.py` добавим функцию `on_startup` и сделаем ее выполнение обязательным при запуске бота:
-```python
-async def on_startup(bot: Bot) -> None:
-    await database.create_tables()
+    database = Database(Path('__file__').parent / 'db.sqlite')
+    ```
+    а в файле `main.py` добавим функцию `on_startup` и сделаем ее выполнение обязательным при запуске бота:
+    ```python
+    async def on_startup(bot: Bot) -> None:
+        await database.create_tables()
 
 
-async def main():
-    # перед запуском
-    dp.startup.register(on_startup)
-    #
-```
+    async def main():
+        # перед запуском
+        dp.startup.register(on_startup)
+        #
+    ```
 
 6. Как записывались запросы в БД при помощи обычного sqlite3?
 
-- для добавления данных в таблицу
-- для получения всех данных из таблицы
-- для получения одной записи из таблицы
+    - для добавления данных в таблицу
+    - для получения всех данных из таблицы
+    - для получения одной записи из таблицы
 
 7. Добавим метод в класс `Database` для выполнения каких-либо *изменений* в БД
     <details>
