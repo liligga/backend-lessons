@@ -16,7 +16,6 @@ slug: 70110405-138c-46bb-a4b8-9e20ac633b0a
         age = State() # возраст пользователя
         gender = State() # пол пользователя
         genre = State() # любимый жанр
-        author = State() # любимый автор
    ```
 
 2. Первый обработчик, в котором запускается диалог
@@ -43,15 +42,6 @@ slug: 70110405-138c-46bb-a4b8-9e20ac633b0a
    ```
    и т.д.
 
-5. Добавим сохранение данных:
-   ```python
-    @router.message(BookSurvey.name)
-    async def process_name(message: types.Message, state: FSMContext):
-        await state.update_data(name=message.text)
-        await state.set_state(BookSurvey.age)
-        await message.answer("Сколько вам лет?")
-   ```
-
 6. Добавим проверку введенных данных:
    ```python
     @router.message(BookSurvey.age)
@@ -59,7 +49,10 @@ slug: 70110405-138c-46bb-a4b8-9e20ac633b0a
         if not message.text.isdigit():
             await message.answer("Пожалуйста, введите число")
             return
-        await state.update_data(age=message.text)
+        age = int(message.text)
+        if age < 10 or age > 80:
+            await message.answer("Пожалуйста, введите возраст от 10 до 80 лет")
+            return
         await state.set_state(BookSurvey.gender)
         await message.answer("Ваш пол?")
    ```

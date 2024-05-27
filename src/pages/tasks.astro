@@ -1,0 +1,38 @@
+---
+import SimpleLayout from "../layouts/SimpleLayout.astro";
+import { getCollection } from 'astro:content';
+import FormattedDate from '../components/FormattedDate.astro';
+
+const articles = (await getCollection('task')).sort(
+  (a, b) => a.data.order.valueOf() - b.data.order.valueOf()
+)
+---
+
+
+<SimpleLayout>
+  <h4>Уроки</h4>
+  <section>
+    <ul>
+      {
+        articles.map((task, ind) => (
+          <li>
+            <a href={`/task/${task.slug}/`}>
+              <h5 class="title">{ind+1} - {task.data.title}</h5>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</SimpleLayout>
+
+
+<style locals>
+ul {
+  list-style-type: none;
+}
+
+a {
+  text-decoration: none;
+}
+</style>
