@@ -17,7 +17,7 @@ order: 2
 какой-то другой модуль. Кстати, названия пакетов и модулей тоже важны, по названию должно быть понятно, за что отвечает пакет 
 или модуль.
 
-###### Разделение на папки
+##### Разделение на папки
 
 Предлагаю следущую структуру:
 
@@ -34,7 +34,7 @@ project
 │   └── cat.jpg
 ├── .env
 ├── .gitignore
-├── bot.py
+├── bot_config.py
 ├── main.py
 └── requirements.txt
 ```
@@ -63,7 +63,7 @@ async def start(message: types.Message):
 Вот как это выглядит в коде:
 
 ```python
-from handlers import start_router
+from handlers.start import start_router
 
 
 async def main():
@@ -74,12 +74,12 @@ async def main():
     await dp.start_polling(bot)
 ```
 
-Теперь обработчик команды `/start`(или любые другие обработчики, если будет нужно) через `start_router` будет привязаны к `dp` и, соответственно, будет работать.
+Теперь обработчик команды `/start` через `start_router` будет привязаны к `dp` и, соответственно, будет работать.
 Все остальные обработчики выносятся в сообветственные модули. Экземпляры класса `Router` в этих модулях я называю по имени
 модуля, например `start_router`, `echo_router`, `picture_router`. И далее они так же привязываются к `dp`:
 
 ```python
-from handlers import start_router
+from handlers.start import start_router
 from handlers.echo import echo_router
 from handlers.picture import picture_router
 
@@ -87,14 +87,33 @@ from handlers.picture import picture_router
 async def main():
     # часть кода пропущена для краткости
     dp.include_router(start_router)
-    dp.include_router(echo_router)
     dp.include_router(picture_router)
+
+    # в самом конце
+    dp.include_router(echo_router)
+
+    # запуск бота:
+    await dp.start_polling(bot)
 ```
 
-###### Вложенные маршрутизаторы
+##### Вынесение конфигурации в отдельный файл
 
-Точно так же, как маршрутизатор `start_router` был привязан к `dp`, можно создавать вложенные маршрутизаторы. 
-Часто это удобно делать, когда бот очень большой и разделен на большие разделы. 
+Вынесем в отдельный файл `bot_config.py` конфигурацию. Это важно, потому что при запуске бота. В файл `bot_config.py` пропишем:
 
-// дописать код для вложенных маршрутизаторов
+```python
+from aiogram import Bot, Dispatcher
+from dotenv import load_dotenv
+from os import getenv
 
+load_dotenv()
+bot = Bot(getenv("BOT_TOKEN"))
+dp = Dispatcher()
+```
+
+И затем в основном файле `main.py` импортируем `bot` и `dp`:
+
+```python
+from bot_config import bot, dp
+```
+
+Таким образом, файл `main.py` немного разгружен, а ещё если нам где-то в проекте понадобится `bot` или `dp`, мы избежим ошибки циклического импорта.
